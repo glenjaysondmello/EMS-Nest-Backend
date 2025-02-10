@@ -1,6 +1,3 @@
-Here is a detailed README.md for your NestJS project that includes your Prisma configuration and various modules. The README also includes CLI commands for creating modules, controllers, services, and Prisma commands.
-
-```markdown
 # Employee Management System - NestJS
 
 ## Description
@@ -202,6 +199,4 @@ This project demonstrates how to manage employee data with rate limiting and cus
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
 
-This README includes setup instructions, project details, CLI commands for generating components, and highlights important features like logging and throttling. You can further customize it based on your actual project requirements.
