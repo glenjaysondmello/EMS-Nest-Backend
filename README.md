@@ -1,99 +1,207 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Here is a detailed README.md for your NestJS project that includes your Prisma configuration and various modules. The README also includes CLI commands for creating modules, controllers, services, and Prisma commands.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+```markdown
+# Employee Management System - NestJS
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is an Employee Management System built with NestJS, Prisma, and PostgreSQL. The application is designed to manage employee data with features such as creating, updating, fetching, and deleting employees. It integrates Prisma ORM with PostgreSQL (via Neon DB), throttling using NestJS throttler, and custom logging with a file system to capture logs.
 
-## Project setup
+## Features
 
-```bash
-$ npm install
+- **Employee CRUD operations**: Create, Read, Update, and Delete employees.
+- **Throttling**: Rate limiting for specific routes with NestJS throttler.
+- **Custom Logging**: Logs requests and errors to a log file using custom logger service.
+- **Prisma Integration**: ORM for PostgreSQL with Prisma.
+
+## Technologies Used
+
+- **NestJS**: Framework for building server-side applications.
+- **Prisma ORM**: Database ORM for PostgreSQL.
+- **PostgreSQL (Neon DB)**: Relational database used for storing employee data.
+- **TypeScript**: Superset of JavaScript for better developer tooling.
+- **Throttler**: Rate limiting for requests to avoid overloading.
+- **Custom Logger**: Logs both to the console and a file system.
+
+## Setup
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/en/download/)
+- [NestJS CLI](https://docs.nestjs.com/)
+- [Prisma CLI](https://www.prisma.io/docs/getting-started)
+- [Neon DB](https://neon.tech/): PostgreSQL database.
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-name>
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up your `.env` file for database connection:
+
+   ```env
+   DATABASE_URL="postgresql://<username>:<password>@<host>:<port>/<database>"
+   ```
+
+4. Generate Prisma client:
+
+   ```bash
+   npx prisma generate
+   ```
+
+5. Run the migrations to set up your database schema:
+
+   ```bash
+   npx prisma migrate dev --name init
+   ```
+
+6. Start the application:
+
+   ```bash
+   npm run start
+   ```
+
+## Project Structure
+
+```
+src/
+├── app.controller.ts
+├── app.module.ts
+├── app.service.ts
+├── employees/
+│   ├── employees.controller.ts
+│   ├── employees.module.ts
+│   ├── employees.service.ts
+├── database/
+│   ├── database.module.ts
+│   ├── database.service.ts
+├── my-logger/
+│   ├── my-logger.module.ts
+│   ├── my-logger.service.ts
+└── prisma/
+    └── schema.prisma
 ```
 
-## Compile and run the project
+## Prisma Schema
 
-```bash
-# development
-$ npm run start
+Below is the schema for the `Employee` model used in the project:
 
-# watch mode
-$ npm run start:dev
+```prisma
+model Employee {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
-# production mode
-$ npm run start:prod
+enum Role {
+  Intern
+  Engineer
+  Admin
+}
 ```
 
-## Run tests
+## CLI Commands for NestJS
+
+### Create Modules
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+nest g module employees
+nest g module database
+nest g module my-logger
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Create Controllers
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+nest g controller employees
+nest g controller app
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Create Services
 
-## Resources
+```bash
+nest g service employees
+nest g service database
+nest g service app
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### Prisma Commands
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- **Create a Prisma Client**:
+  
+  ```bash
+  npx prisma generate
+  ```
 
-## Support
+- **Apply Migrations**:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+  ```bash
+  npx prisma migrate dev --name init
+  ```
 
-## Stay in touch
+- **Seed Database (Optional)**:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  If you have a seed file (`prisma/seed.ts`), run:
+
+  ```bash
+  npx prisma db seed
+  ```
+
+## Logging
+
+This project includes custom logging functionality with file logging enabled.
+
+Logs are stored in the `logs/myLogFile.log` file and include formatted timestamps and request details. Here's an example of the log:
+
+```log
+1/3/25, 4:13 AM    EmployeesController    Request for ALL Employees    ::1
+1/3/25, 4:13 AM    AllExceptionsFilter    ThrottlerException: Too Many Requests
+```
+
+### Custom Logger Service
+
+- The `MyLoggerService` extends NestJS's `ConsoleLogger` and adds functionality to log requests to a file.
+- The logs are saved under the `logs/` directory.
+
+## Throttling
+
+- **Short Timeout**: Limits to 5 requests per minute.
+- **Long Timeout**: Limits to 100 requests per minute.
+
+Throttling is implemented using `@nestjs/throttler` and helps in protecting against too many requests.
+
+## Endpoints
+
+### Employee CRUD Operations
+
+- **POST /employees**: Create a new employee.
+- **GET /employees**: Get all employees, optionally filter by role (`Intern`, `Engineer`, `Admin`).
+- **GET /employees/:id**: Get a specific employee by ID.
+- **PATCH /employees/:id**: Update an employee.
+- **DELETE /employees/:id**: Delete an employee.
+
+## Conclusion
+
+This project demonstrates how to manage employee data with rate limiting and custom logging. The NestJS framework combined with Prisma makes it easy to scale this application and add more features in the future.
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
+
+This README includes setup instructions, project details, CLI commands for generating components, and highlights important features like logging and throttling. You can further customize it based on your actual project requirements.
